@@ -1,5 +1,6 @@
 # Homework Tracker
-
+## Nyky Tilanne
+Kirjautuneet käyttäjät voivat etsiä kotitehtäviään, ja tyhjä hakukenttä listaa kaikki kotitehtävät. Uloskirjautumisominaisuus on käytössä. Rekisteröityneet ja kirjautuneet käyttäjät näkevät vain omat lisäämänsä kotitehtävät, joita he voivat muokata ja poistaa. Rekisteröityminen toimii, kirjautuminen toimii, lisääminen ja poistaminen toimivat.
 ## Sovelluksen toiminnot
 - Käyttäjä pystyy lisäämään uuden kotitehtävän.
 - Käyttäjä näkee kaikki lisätyt kotitehtävät järjestettynä eräpäivän mukaan.
