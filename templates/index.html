@@ -17,7 +17,15 @@
         <a href="{{ url_for('logout') }}">Logout</a>
         <a href="{{ url_for('add') }}">Add Homework</a>
 
-        <h2>Homework List</h2>
+        <h2>Your Homework List</h2>
+        
+        <!-- Search Form -->
+        <form method="POST">
+            <label for="search_query">Search Homework:</label>
+            <input type="text" name="search_query" id="search_query" value="{{ search_query }}" placeholder="Search by title or course">
+            <button type="submit">Search</button>
+        </form>
+
         <table>
             <thead>
                 <tr>
@@ -40,6 +48,10 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        {% if homeworks|length == 0 %}
+            <p>No homework found.</p>
+        {% endif %}
     {% endif %}
 </body>
 </html>

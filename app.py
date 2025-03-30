@@ -26,13 +26,23 @@ class Homework(db.Model):
     
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-@app.route('/')
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    homeworks = Homework.query.filter_by(user_id=session['user_id']).order_by(Homework.due_date.asc()).all()
-    return render_template('index.html', homeworks=homeworks)
 
+    search_query = request.form.get('search_query', '')
+
+    if search_query:
+        homeworks = Homework.query.filter(
+            (Homework.user_id == session['user_id']) &
+            ((Homework.title.contains(search_query)) | (Homework.course.contains(search_query)))
+        ).order_by(Homework.due_date.asc()).all()
+    else:
+        homeworks = Homework.query.filter_by(user_id=session['user_id']).order_by(Homework.due_date.asc()).all()
+
+    return render_template('index.html', homeworks=homeworks, search_query=search_query)
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
