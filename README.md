@@ -10,7 +10,4 @@ Kirjautuneet käyttäjät voivat etsiä kotitehtäviään, ja tyhjä hakukenttä
 - Käyttäjä pystyy valitsemaan ilmoitukselle yhden tai useamman luokittelun (esim. Aloitustila, Puolivälissä, Valmis (Poista ilmoituksen)).
 ## Sovelluksen asennus
 
-1. Asenna Flask ja riippuvuudet:
-
-   ```sh
-   pip install flask flask-sqlalchemy flask-wtf
+python3 app.py

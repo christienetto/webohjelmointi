@@ -14,9 +14,10 @@
         <a href="{{ url_for('login') }}">Login</a>
     {% else %}
         <p>Welcome, {{ session['user_id'] }}</p>
-        <a href="{{ url_for('logout') }}">Logout</a>
-        <a href="{{ url_for('add') }}">Add Homework</a>
 
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+
+        <a href="{{ url_for('home.add') }}">Add Homework</a>
         <h2>Your Homework List</h2>
         
         <!-- Search Form -->
@@ -42,8 +43,8 @@
                         <td>{{ hw.title }}</td>
                         <td>{{ hw.due_date.strftime('%Y-%m-%d') }}</td>
                         <td>
-                            <a href="{{ url_for('delete', id=hw.id) }}" onclick="return confirm('Are you sure you want to delete this?');">Delete</a>
-                        </td>
+                            <a href="{{ url_for('home.delete', id=hw.id) }}" onclick="return confirm('Are you sure you want to delete this?');">Delete</a>
+                       </td>
                     </tr>
                 {% endfor %}
             </tbody>
