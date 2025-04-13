@@ -1,5 +1,5 @@
-from db import get_db
 
+from db import get_db, get_all_accessible_homework
 def get_user_by_username(username):
     db = get_db()
     return db.execute("SELECT * FROM user WHERE username = ?", (username,)).fetchone()
@@ -10,9 +10,7 @@ def create_user(username, hashed_password):
     db.commit()
 
 def get_homework_by_user(user_id):
-    db = get_db()
-    return db.execute("SELECT * FROM homework WHERE user_id = ? ORDER BY due_date ASC", (user_id,)).fetchall()
-
+    return get_all_accessible_homework(user_id)
 def search_homework(user_id, query):
     db = get_db()
     return db.execute(

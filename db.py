@@ -27,5 +27,46 @@ def init_db():
         FOREIGN KEY (user_id) REFERENCES user (id)
     )''')
 
+    c.execute('''CREATE TABLE IF NOT EXISTS collaborations (
+        owner_id INTEGER NOT NULL,
+        collaborator_id INTEGER NOT NULL,
+        FOREIGN KEY (owner_id) REFERENCES user (id),
+        FOREIGN KEY (collaborator_id) REFERENCES user (id),
+        UNIQUE (owner_id, collaborator_id)
+    )''')
+
     conn.commit()
     conn.close()
+
+
+
+def add_collaborator(owner_id, collaborator_username):
+    conn = get_db()
+    c = conn.cursor()
+    c.execute('SELECT id FROM user WHERE username = ?', (collaborator_username,))
+    row = c.fetchone()
+    if not row:
+        return False
+    collaborator_id = row['id']
+    try:
+        c.execute('INSERT INTO collaborations (owner_id, collaborator_id) VALUES (?, ?)', (owner_id, collaborator_id))
+        conn.commit()
+        return True
+    except:
+        return False
+    finally:
+        conn.close()
+
+def get_all_accessible_homework(user_id):
+    conn = get_db()
+    c = conn.cursor()
+    c.execute('SELECT owner_id FROM collaborations WHERE collaborator_id = ?', (user_id,))
+    owners = [row['owner_id'] for row in c.fetchall()]
+    owners.append(user_id)
+    placeholders = ','.join('?' for _ in owners)
+    query = f'SELECT * FROM homework WHERE user_id IN ({placeholders})'
+    c.execute(query, owners)
+    result = c.fetchall()
+    conn.close()
+    return result
+

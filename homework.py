@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from datetime import datetime
 from models import get_homework_by_user, add_homework, get_homework_by_id, delete_homework, search_homework
 
+from db import add_collaborator
 home_bp = Blueprint('home', __name__)
 
 @home_bp.route('/', methods=['GET', 'POST'])
@@ -50,4 +51,21 @@ def delete(id):
     else:
         flash("Permission denied.", "danger")
     return redirect(url_for('home.index'))
+
+
+@home_bp.route('/add_collaborator', methods=['GET', 'POST'])
+def add_collaborator_route():
+    if 'user_id' not in session:
+        return redirect(url_for('auth.login'))
+
+    if request.method == 'POST':
+        username = request.form['collaborator_username']
+        success = add_collaborator(session['user_id'], username)
+        if success:
+            flash('Collaborator added.', 'success')
+        else:
+            flash('Failed to add collaborator.', 'danger')
+        return redirect(url_for('home.index'))
+
+    return render_template('add_collaborator.html')
 
